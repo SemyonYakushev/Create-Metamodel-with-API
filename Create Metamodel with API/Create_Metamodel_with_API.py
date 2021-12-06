@@ -4,40 +4,43 @@ import base64
 import json
 import urllib3
 import sys
+import pandas as pd
 
 auth_key = 'c3lzdGVtIGFkbWluaXN0cmF0b3I6MTIzcXdlQVNEKw=='
 base_url = 'http://185.53.22.117:8008'
- 
-class APIGET:
-    def get_objecttypes(self, auth_key, base_url):
-        
-        headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json', 
-        'Authorization': 'Basic ' + auth_key,
-        }
+file = "export.xlsx"
 
-        response = requests.get(base_url + '/api/metaModel/objectType', headers=headers)
-        items = json.loads(response.text)
-        print(items)
 
-    def get_relationshipstypes(rel_types, auth_key, base_ur):
-    
-        headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json', 
-        'Authorization': 'Basic ' + auth_key,
-        }
+objects = pd.read_excel(io=file, header = 0, engine='openpyxl', squeeze = True)
+print(objects)
 
-        response = requests.get(base_url + '/api/metaModel/relationshipTypes', headers=headers)
-        items = json.loads(response.text)
-        print(items)
+list_types = []
 
-    def get_relationships_pairs(self, auth_key, base_ur):
-        pass
+headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json', 
+    'Authorization': 'Basic ' + auth_key,
+}
 
-    def get_atributestype(self, auth_key, base_ur):
-        pass
+for items in objects:
+   list_types.append({'Name': items})
+   
+for type in list_types:
+   jdata = json.dumps(type)
+   response = requests.post(base_url + '/api/metaModel/objectType', headers=headers, data=jdata)
 
-    def get_atributes_assignment(self, auth_key, base_ur):
-        pass
+#class APIGET:
+    #def get_objecttypes(self, auth_key, base_url):
+       #pass
+
+    #def get_relationshipstypes(self, auth_key, base_ur):
+        #pass
+
+    #def get_relationships_pairs(self, auth_key, base_ur):
+        #pass
+
+    #def get_atributestype(self, auth_key, base_ur):
+        #pass
+
+    #def get_atributes_assignment(self, auth_key, base_ur):
+        #pass
