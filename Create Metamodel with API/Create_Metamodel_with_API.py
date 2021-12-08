@@ -100,10 +100,21 @@ class iServerMetamodel:
           response = requests.post(base_url + '/api/metaModel/attributeType', headers=headers, data=jdata)
           print(atr_json)
 
-    #def get_atributes_assignment(self, auth_key, base_url):
-        #pass
+    def post_atributes_assignment(auth_key, base_url, file):
+      {
+        'GeneralType': 'Object',
+        'Name': item['ObjectTypeName'],
+        'Tabs': [
+            {
+            'Name': item['AttributeGroupName'],
+            'AttributeNames': [
+                item['AttrName']
+                ]
+            }
+            ]
+      }
 
 
 #iServerMetamodel.post_objecttypes(auth_key = auth_key, base_url = base_url, file=file)
 #iServerMetamodel.post_relationshiptypes(auth_key = auth_key, base_url = base_url, file=file)
-iServerMetamodel.post_attributetypes(auth_key = auth_key, base_url = base_url, file=file)
+#iServerMetamodel.post_attributetypes(auth_key = auth_key, base_url = base_url, file=file)
