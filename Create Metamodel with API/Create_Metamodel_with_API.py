@@ -83,19 +83,17 @@ class iServerMetamodel:
           'IsMandatory': 'false',
           'SyncWithVisio': item['IsSynchronised'],
           'VisioSyncName': item['VisioSyncName'],
-          'ListValues':  [
-            {
-          'Name': 'test'
-            }]
+          'ListValues': []
           }
           if item['AttributeType'] == 'List':
               atr_json['ListValues'].append(
                 {
                   'Name': 'test2'
-                })
-       #jdata = json.dumps(obj_json)
-       #response = requests.post(base_url + '/api/metaModel/attributeType', headers=headers, data=jdata)
-       print(atr_json)
+                }
+              )
+          #jdata = json.dumps(obj_json)
+          #response = requests.post(base_url + '/api/metaModel/attributeType', headers=headers, data=jdata)
+          print(atr_json)
 
     #def get_atributes_assignment(self, auth_key, base_url):
         #pass
