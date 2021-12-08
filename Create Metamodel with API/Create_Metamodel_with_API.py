@@ -69,6 +69,9 @@ class iServerMetamodel:
             
 
     def post_attributetypes(auth_key, base_url, file):
+         
+
+
        attributes = pd.read_excel(io=file, header = 0, engine='openpyxl', sheet_name = "Attribute") 
        headers = {
            'Accept': 'application/json',
@@ -86,13 +89,15 @@ class iServerMetamodel:
           'ListValues': []
           }
           if item['AttributeType'] == 'List':
-              atr_json['ListValues'].append(
+              xmlvalue = ElementTree.fromstring(item['ListValues'])
+              for a in xmlvalue:
+                atr_json['ListValues'].append(
                 {
-                  'Name': 'test2'
-                }
-              )
-          #jdata = json.dumps(obj_json)
-          #response = requests.post(base_url + '/api/metaModel/attributeType', headers=headers, data=jdata)
+                'Name': a.text
+                })
+      
+          jdata = json.dumps(atr_json)
+          response = requests.post(base_url + '/api/metaModel/attributeType', headers=headers, data=jdata)
           print(atr_json)
 
     #def get_atributes_assignment(self, auth_key, base_url):
