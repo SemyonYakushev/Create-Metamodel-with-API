@@ -151,7 +151,7 @@ class iServerMetamodel:
            
 
 
-iServerMetamodel.post_objecttypes(auth_key = auth_key, base_url = base_url, file=file)
+#iServerMetamodel.post_objecttypes(auth_key = auth_key, base_url = base_url, file=file)
 iServerMetamodel.post_relationshiptypes(auth_key = auth_key, base_url = base_url, file=file)
 iServerMetamodel.post_attributetypes(auth_key = auth_key, base_url = base_url, file=file)
 iServerMetamodel.post_atributes_assignment(auth_key = auth_key, base_url = base_url, file=file)
