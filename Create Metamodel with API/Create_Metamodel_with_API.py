@@ -78,7 +78,7 @@ class iServerMetamodel:
            'Content-Type': 'application/json', 
            'Authorization': 'Basic ' + auth_key
            }
- 
+
        for index, item in attributes.iterrows():
           atr_json = {
           'Name': item['RusAttrName'],
@@ -101,20 +101,51 @@ class iServerMetamodel:
           print(atr_json)
 
     def post_atributes_assignment(auth_key, base_url, file):
-      {
-        'GeneralType': 'Object',
-        'Name': item['ObjectTypeName'],
-        'Tabs': [
-            {
-            'Name': item['AttributeGroupName'],
-            'AttributeNames': [
-                item['AttrName']
-                ]
-            }
-            ]
-      }
+
+        assignments = pd.read_excel(io=file, header = 0, engine='openpyxl', sheet_name = "AttrGrouping")
+
+        headers = {
+           'Accept': 'application/json',
+           'Content-Type': 'application/json', 
+           'Authorization': 'Basic ' + auth_key
+           }
+        
+        asm_json = {}
+        atrType = ""
+        atrGroup = ""
+        group_json = {}
+        for index, item in assignments.iterrows():
+            if atrType != item['ObjectTypeName']:
+
+                if len(asm_json)>0:
+                    asm_json['Tabs'].append(group_json)
+                    group_json = {}
+                    jdata = json.dumps(asm_json)
+                    response = requests.post(base_url + '/api/metaModel/attributes', headers=headers, data=jdata)
+                    print(asm_json)
+                asm_json = {   
+                    'GeneralType': 'Object',
+                    'Name': item['ObjectTypeName'],
+                    'Tabs': []
+                    }
+                atrGroup = ""
+                atrType = item['ObjectTypeName']
+            if atrGroup != item['AttributeGroupName']:
+                if len(group_json)>0:
+                    asm_json['Tabs'].append(group_json)
+                group_json = {}
+                group_json['Name'] = item['AttributeGroupName']
+                group_json['AttributeNames'] = []
+                atrGroup = item['AttributeGroupName']
+            group_json['AttributeNames'].append(item['AttrName'])
+          
+
+        
+        
+           
 
 
 #iServerMetamodel.post_objecttypes(auth_key = auth_key, base_url = base_url, file=file)
 #iServerMetamodel.post_relationshiptypes(auth_key = auth_key, base_url = base_url, file=file)
 #iServerMetamodel.post_attributetypes(auth_key = auth_key, base_url = base_url, file=file)
+iServerMetamodel.post_atributes_assignment(auth_key = auth_key, base_url = base_url, file=file)
