@@ -86,6 +86,7 @@ class iServerMetamodel:
           'IsMandatory': 'false',
           'SyncWithVisio': item['IsSynchronised'],
           'VisioSyncName': item['VisioSyncName'],
+          'RowHeight': item['TextRowCount'],
           'ListValues': []
           }
           if item['AttributeType'] == 'List':
@@ -120,8 +121,8 @@ class iServerMetamodel:
                 if len(asm_json)>0:
                     asm_json['Tabs'].append(group_json)
                     group_json = {}
-                    jdata = json.dumps(asm_json)
-                    response = requests.post(base_url + '/api/metaModel/attributes', headers=headers, data=jdata)
+                    #jdata = json.dumps(asm_json)
+                    #response = requests.post(base_url + '/api/metaModel/attributes', headers=headers, data=jdata)
                     print(asm_json)
                 asm_json = {   
                     'GeneralType': 'Object',
