@@ -33,6 +33,7 @@ class iServerMetamodel:
                 'Content-Type': 'application/json', 
                 'Authorization': 'Basic ' + auth_key
                 }
+
         rel_json = {}
         relType = ""
         for index, item in relations.iterrows():
@@ -40,7 +41,7 @@ class iServerMetamodel:
                 if len(rel_json) > 0:
                      jdata = json.dumps(rel_json)
                      response = requests.post(base_url + '/api/metaModel/relationshipType', headers=headers, data=jdata)
-                     print(rel_json)
+                     print(response.text)
                      print('------------------------------------------')
                 rel_json = {'Name': item['RelationTypeName'],
                         'Rules': [
@@ -61,16 +62,9 @@ class iServerMetamodel:
                             'SourceType': {'Type': item['FromObjectTypeName']},
                             'TargetType': {'Type': item['ToObjectTypeName']}
                             })
-               
-        jdata = json.dumps(rel_json)
-        response = requests.post(base_url + '/api/metaModel/relationshipType', headers=headers, data=jdata)
-
-
-            
 
     def post_attributetypes(auth_key, base_url, file):
          
-
 
        attributes = pd.read_excel(io=file, header = 0, engine='openpyxl', sheet_name = "Attribute") 
        headers = {
@@ -86,7 +80,6 @@ class iServerMetamodel:
           'IsMandatory': 'false',
           'SyncWithVisio': item['IsSynchronised'],
           'VisioSyncName': item['VisioSyncName'],
-          'RowHeight': item['TextRowCount'],
           'ListValues': []
           }
           if item['AttributeType'] == 'List':
@@ -99,7 +92,7 @@ class iServerMetamodel:
       
           jdata = json.dumps(atr_json)
           response = requests.post(base_url + '/api/metaModel/attributeType', headers=headers, data=jdata)
-          print(atr_json)
+          print(response.text)
 
     def post_atributes_assignment(auth_key, base_url, file):
 
@@ -152,6 +145,6 @@ class iServerMetamodel:
 
 
 #iServerMetamodel.post_objecttypes(auth_key = auth_key, base_url = base_url, file=file)
-iServerMetamodel.post_relationshiptypes(auth_key = auth_key, base_url = base_url, file=file)
-iServerMetamodel.post_attributetypes(auth_key = auth_key, base_url = base_url, file=file)
-iServerMetamodel.post_atributes_assignment(auth_key = auth_key, base_url = base_url, file=file)
+#iServerMetamodel.post_relationshiptypes(auth_key = auth_key, base_url = base_url, file=file)
+#iServerMetamodel.post_attributetypes(auth_key = auth_key, base_url = base_url, file=file)
+#iServerMetamodel.post_atributes_assignment(auth_key = auth_key, base_url = base_url, file=file)
